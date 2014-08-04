@@ -1,0 +1,6 @@
+[
+	{
+		"caption": "CloseCommentTag: Insert comment tag",
+		"command": "insert_comment_tag"
+	}
+]

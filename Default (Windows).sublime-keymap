@@ -1,0 +1,5 @@
+[
+  {
+    "keys": ["ctrl+shift+,"], "command": "insert_comment_tag"
+  }
+]
