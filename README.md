@@ -37,7 +37,7 @@ Hoge
 
 - Windows: <kbd>shift</kbd>+<kbd>ctrl</kbd>+<kbd>,</kbd>
 - OSX: <kbd>shift</kbd>+<kbd>command</kbd>+<kbd>,</kbd>
-- Linux: <kbd>shift</kbd>+<kbd>command</kbd>+<kbd>,</kbd>
+- Linux: <kbd>shift</kbd>+<kbd>ctrl</kbd>+<kbd>,</kbd>
 
 ## Install
 
