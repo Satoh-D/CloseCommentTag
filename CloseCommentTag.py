@@ -7,7 +7,7 @@ import re
 
 
 regexAll = re.compile('<([a-zA-Z0-9/ _=;\"\.\-]+)>')
-regexTagname = re.compile('(^[a-zA-Z]+)')
+regexTagname = re.compile('(^[a-zA-Z0-9]+)')
 regexNonCloseTag = re.compile(
     '^(br|wbr|hr|img|col|base|link|meta|input|keygen|area|param|embed|source|track|command)')
 regexIdname = re.compile('id="([\w\-]+)"')
@@ -31,14 +31,15 @@ class InsertCommentTagCommand(sublime_plugin.TextCommand):
 
         # タグの一覧から閉じられていないタグの取得
         for tag in tags:
-            if tag[0] == '/':
-                currentCloseTag = tag[1:]
-                openTagsLast = "".join(regexTagname.findall(openTags[-1]))
+            if not regexNonCloseTag.findall(tag):
+                if tag[0] == '/':
+                    currentCloseTag = tag[1:]
+                    openTagsLast = "".join(regexTagname.findall(openTags[-1]))
 
-                if currentCloseTag == openTagsLast:
-                    openTags.pop()
-            else:
-                openTags.append(tag)
+                    if currentCloseTag == openTagsLast:
+                        openTags.pop()
+                else:
+                    openTags.append(tag)
 
         # 閉じられていないタグ一覧から閉じタグが必要な直近の要素を取得
         openTags.reverse()
@@ -51,7 +52,6 @@ class InsertCommentTagCommand(sublime_plugin.TextCommand):
         # id, class名の取得
         closeCommentTagVars.tagname = "".join(regexTagname.findall(currentOpenTag))
         closeCommentTagVars.id = "".join(regexIdname.findall(currentOpenTag))
-        print(closeCommentTagVars.id)
         closeCommentTagVars.classname = "".join(regexClassname.findall(currentOpenTag))
         closeCommentTagVars.classname = closeCommentTagVars.classname.replace(' ', '.')
 
