@@ -27,7 +27,12 @@ class InsertCommentTagCommand(sublime_plugin.TextCommand):
         openTags = []
         currentOpenTag = ''
         closeCommentTagVars = CloseCommentTagVars()
-        closeTag = '<!-- /%s%s -->'
+        closeCommentTagVars.tagname = ''
+        closeCommentTagVars.id = ''
+        closeCommentTagVars.classname = ''
+        closeCommentTagVars.comment = ''
+        # closeTag = '<!-- /%s%s -->'
+        closeTag = '<!-- /%s -->'
 
         # タグの一覧から閉じられていないタグの取得
         for tag in tags:
@@ -56,13 +61,15 @@ class InsertCommentTagCommand(sublime_plugin.TextCommand):
         closeCommentTagVars.classname = closeCommentTagVars.classname.replace(' ', '.')
 
         # キャレットの前にid, class名付きのコメントを挿入
-        if closeCommentTagVars.id:
-            closeCommentTagVars.id = '#' + closeCommentTagVars.id
+        if closeCommentTagVars.id or closeCommentTagVars.classname:
+            if closeCommentTagVars.id:
+                closeCommentTagVars.comment += '#'
+                closeCommentTagVars.comment += closeCommentTagVars.id
 
-        if closeCommentTagVars.classname:
-            closeCommentTagVars.classname = '.' + closeCommentTagVars.classname
+            if closeCommentTagVars.classname:
+                closeCommentTagVars.comment += '.'
+                closeCommentTagVars.comment += closeCommentTagVars.classname
+        else:
+            closeCommentTagVars.comment = closeCommentTagVars.tagname
 
-        self.view.insert(
-            edit,
-            self.view.sel()[0].begin(),
-            closeTag % (closeCommentTagVars.id, closeCommentTagVars.classname))
+        self.view.insert(edit, self.view.sel()[0].begin(), closeTag % closeCommentTagVars.comment)
